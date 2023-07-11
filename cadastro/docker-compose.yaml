@@ -1,0 +1,48 @@
+version: "3.7"
+services:
+  postgres_cadastro:
+    container_name: postgres_cadastro_ifood
+    image: debezium/example-postgres # essa versao vem com as configuracoes necessarias para o connector do debezium
+    environment:
+      POSTGRES_USER: cadastro
+      POSTGRES_PASSWORD: cadastro
+    ports:
+      - "5432:5432"
+  postgres_marketplace:
+    container_name: postgres_marketplace_ifood
+    image: postgres:12.2
+    environment:
+      POSTGRES_USER: marketplace
+      POSTGRES_PASSWORD: marketplace
+    ports:
+      - "5433:5432"
+  keycloak_ifood:
+    container_name: keycloak_ifood
+    image: jboss/keycloak:9.0.2
+    environment:
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+    ports:
+      - "8180:8080"
+  jaeger_ifood:
+    container_name: jaeger_ifood
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "16686:16686" # Jaeger UI
+      - "14268:14268" # Receive legacy OpenTracing traces, optional
+      - "4317:4317"   # OTLP gRPC receiver
+      - "4318:4318"   # OTLP HTTP receiver, not yet used by Quarkus, optional
+      - "14250:14250" # Receive from external otel-collector, optional
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+
+  prometheus_ifood:
+    container_name: prometheus_ifood
+    image: prometheus-ifood-v2:latest
+    network_mode: "host"
+
+  grafana_ifood:
+    container_name: grafana_ifood
+    image: grafana/grafana:latest
+    network_mode: "host"
+

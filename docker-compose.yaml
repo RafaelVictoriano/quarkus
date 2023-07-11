@@ -39,7 +39,7 @@ services:
   
   prometheus_ifood:
     container_name: prometheus_ifood
-    image: prometheus-ifood-v2:latest
+    image: prometheus-ifood-v2
     network_mode: "host"
 
   grafana_ifood:
